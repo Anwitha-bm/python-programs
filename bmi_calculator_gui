@@ -1,0 +1,51 @@
+from tkinter import *
+from tkinter import messagebox
+
+def calculate_bmi():
+    try:
+        weight = float(weight_entry.get())
+        height = float(height_entry.get()) / 100  
+
+        bmi = round(weight / (height * height), 1)
+        result_var.set(str(bmi))
+        bmi_result(bmi)
+
+    except:
+        result_var.set("error")
+
+def bmi_result(bmi):
+    if bmi < 18.5:
+        messagebox.showinfo("BMI Result", f"BMI = {bmi} (Underweight)")
+    elif 18.5 <= bmi <= 24.9:
+        messagebox.showinfo("BMI Result", f"BMI = {bmi} (Normal)")
+    elif 25 <= bmi <= 29.9:
+        messagebox.showinfo("BMI Result", f"BMI = {bmi} (Overweight)")
+    else:
+        messagebox.showinfo("BMI Result", f"BMI = {bmi} (Obesity)")
+
+def clear_fields():
+    weight_entry.delete(0, "end")
+    height_entry.delete(0, "end")
+    result_var.set("")
+
+if __name__ == "__main__":
+    gui = Tk()
+    gui.configure(background="purple")
+    gui.title("BMI Calculator")
+    gui.geometry("270x200")
+    result_var = StringVar()
+    result_field = Entry(gui, textvariable=result_var)
+    result_field.grid(columnspan=4, ipadx=70, pady=5)
+    Label(gui, text="Weight (kg):", bg="purple", fg="white").grid(row=1, column=0)
+    weight_entry = Entry(gui)
+    weight_entry.grid(row=1, column=1)
+    Label(gui, text="Height (cm):", bg="purple", fg="white").grid(row=2, column=0)
+    height_entry = Entry(gui)
+    height_entry.grid(row=2, column=1)
+    calc_button = Button(gui, text='=', fg='white', bg='black', command=calculate_bmi, height=2, width=7)
+    calc_button.grid(row=3, column=0)
+
+    clear_button = Button(gui, text='clear', fg='white', bg='black', command=clear_fields, height=2, width=7)
+    clear_button.grid(row=3, column=1)
+
+    gui.mainloop()
